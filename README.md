@@ -4,7 +4,7 @@ Reference app for a tutoring use case.
 
 # Summary
 
-Tutoring is a very popular sector for Flutter applications. On Apptopia it ranks as the \_\_\_\_ biggest market. Tutoring is a real time interaction that is either 1-1 or 1-many, and in this case Agora is well suited to provide a reliable solution to any tutoring application.
+Tutoring is a very popular sector for Flutter applications. Tutoring is a real time interaction that is either 1-1 or 1-many, and in this case Agora is well suited to provide a reliable solution to any tutoring application.
 
 # Business Strategy
 
