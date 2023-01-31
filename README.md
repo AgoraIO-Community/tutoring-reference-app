@@ -18,7 +18,7 @@ This reference app aims to provide a strong starting point for anybody looking t
 # Tech Spec
 
 - Built with Flutter 3.7
-- Target Devices: Android, iOS
+- Target Devices: Android, iOS, Web
 - Minimum Versions
   - Android SDK 32
   - iOS 16.0
@@ -59,8 +59,10 @@ This reference app aims to provide a strong starting point for anybody looking t
 | Lesson Recording        | Record Lesson                | Save a recording of the lesson to a dabase                                                                 | 3        | Cloud Recording    | AWS                  |
 |                         | View Recorded Lesson         | Retrieve lesson, and show only to users who have paid for that session                                     | 3        |                    | AWS                  |
 | Interactive Whiteboard  | Whiteboard Session           | Transfer either 1-1 or groupcall into a whiteboard session                                                 | -        | Whiteboard         |                      |
+|                         | Permissions                  | Only participants on Web platform can interact with Whiteboard. The rest just viewers                      | -        | Whiteboard         |                      |
 | Screen Share            | Toggle Screen Share          | Toggle screen share on engine, and update UI                                                               | -        | RTC                |                      |
 |                         | Choose which screen to share | When screenshare gets toggled, show a UI of which screen user wants to share                               | -        | RTC                |                      |
+|                         | Permissions                  | Only participants on Web platform can screenshare, the rest only viewers                                   | -        | RTC                |                      |
 | Schedule a Session      | Display Tutors               | Show a list of tutors stored in the database with what they specialize and their ratings                   | 1        |                    | Supabase             |
 |                         | Select Time                  | Can click into the tutor, and see available times for a session                                            | 1        |                    | Supabase             |
 |                         | Pay for session              | Before students can join the session they have to pay using Stripe                                         | 2        |                    | GooglePay + ApplePay |
