@@ -14,17 +14,18 @@ class Home extends ConsumerWidget {
 
     ListView upcomingSessions() {
       if (currentUser.user.upcomingSessions.isEmpty) {
-        return ListView(children: [
-          Container(
-            margin: const EdgeInsets.only(top: 20.0),
-            child: const Center(
-              child: Text(
-                "No Upcoming Sessions",
-                textAlign: TextAlign.center,
+        return ListView(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 20.0, left: 16, right: 16),
+              child: const Text(
+                "No upcoming sessions, schedule a seesion using the button below",
               ),
             ),
-          ),
-        ]);
+          ],
+        );
       }
       return ListView.builder(
         itemCount: currentUser.user.upcomingSessions.length,
@@ -71,7 +72,11 @@ class Home extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tutoring App"),
+        title: Image.asset(
+          "assets/tutor.png",
+          height: 25,
+          color: Colors.black,
+        ),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 8.0),
@@ -124,55 +129,18 @@ class Home extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverList(
-            delegate: SliverChildListDelegate([
-              const Text(
-                "Upcoming Sessions",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              ListView.builder(
-                itemCount: currentUser.user.upcomingSessions.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(16.0),
-                    padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            currentUser.user.upcomingSessions[index].teacherPic,
-                          ),
-                          onBackgroundImageError: (exception, stackTrace) {},
-                        ),
-                        const SizedBox(width: 8.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              currentUser
-                                  .user.upcomingSessions[index].teacherName,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            Text(
-                              currentUser.user.upcomingSessions[index].subject,
-                              style: const TextStyle(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ]),
+            delegate: SliverChildListDelegate(
+              [
+                const Padding(
+                  padding: EdgeInsets.only(left: 16.0, top: 16),
+                  child: Text(
+                    "Upcoming Sessions",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                upcomingSessions(),
+              ],
+            ),
           ),
         ],
       ),

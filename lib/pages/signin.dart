@@ -29,9 +29,13 @@ class _SignInState extends ConsumerState<SignIn> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text("Enter Icon here"),
+            Image.asset(
+              "assets/tutor.png",
+              height: 50,
+              color: Colors.black,
+            ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             const Text(
               'Log in to Tutor',
