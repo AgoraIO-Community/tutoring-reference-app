@@ -36,6 +36,7 @@ class UserNotifier extends StateNotifier<LocalUser> {
                 email: "error",
                 name: "error",
                 profilePic: "error",
+                teacher: false,
                 upcomingSessions: []),
           ),
         );
@@ -68,6 +69,7 @@ class UserNotifier extends StateNotifier<LocalUser> {
               email: email,
               name: "No Name",
               profilePic: "http://www.gravatar.com/avatar/?d=mp",
+              teacher: false,
               upcomingSessions: []).toMap(),
         );
     DocumentSnapshot snapshot = await response.get();
@@ -79,6 +81,14 @@ class UserNotifier extends StateNotifier<LocalUser> {
   Future<void> updateName(String name) async {
     await _firestore.collection("users").doc(state.id).update({'name': name});
     state = state.copyWith(user: state.user.copyWith(name: name));
+  }
+
+  Future<void> updateTeacherStatus(bool teacherStatus) async {
+    await _firestore
+        .collection("users")
+        .doc(state.id)
+        .update({'teacher': teacherStatus});
+    state = state.copyWith(user: state.user.copyWith(teacher: teacherStatus));
   }
 
   Future<void> updateImage(File image) async {
@@ -101,6 +111,7 @@ class UserNotifier extends StateNotifier<LocalUser> {
           email: "error",
           name: "error",
           profilePic: "error",
+          teacher: false,
           upcomingSessions: []),
     );
   }

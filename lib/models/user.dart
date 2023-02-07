@@ -7,12 +7,14 @@ class FirebaseUser {
   final String email;
   final String name;
   final String profilePic;
+  final bool teacher;
   final List<Session> upcomingSessions;
 
   const FirebaseUser({
     required this.email,
     required this.name,
     required this.profilePic,
+    required this.teacher,
     required this.upcomingSessions,
   });
 
@@ -20,12 +22,14 @@ class FirebaseUser {
     String? email,
     String? name,
     String? profilePic,
+    bool? teacher,
     List<Session>? upcomingSessions,
   }) {
     return FirebaseUser(
       email: email ?? this.email,
       name: name ?? this.name,
       profilePic: profilePic ?? this.profilePic,
+      teacher: teacher ?? this.teacher,
       upcomingSessions: upcomingSessions ?? this.upcomingSessions,
     );
   }
@@ -35,28 +39,19 @@ class FirebaseUser {
       'email': email,
       'name': name,
       'profilePic': profilePic,
+      'teacher': teacher,
       'upcomingSessions': upcomingSessions.map((x) => x.toMap()).toList(),
     };
   }
 
   factory FirebaseUser.fromMap(Map<String, dynamic> map) {
-    List<Session> convertMaptoList(Map<String, dynamic> map) {
-      List<Session> list = [];
-
-      map.forEach((key, value) {
-        list.add(Session.fromMap(value));
-      });
-      return list;
-    }
-
     return FirebaseUser(
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       profilePic: map['profilePic'] ?? '',
-      upcomingSessions: List<Session>.from(map['upcomingSessions']?.map((x) {
-            return Session.fromMap(x);
-          }) ??
-          []),
+      teacher: map['teacher'] ?? false,
+      upcomingSessions: List<Session>.from(
+          map['upcomingSessions']?.map((x) => Session.fromMap(x)) ?? []),
     );
   }
 
@@ -67,7 +62,7 @@ class FirebaseUser {
 
   @override
   String toString() {
-    return 'FirebaseUser(email: $email, name: $name, profilePic: $profilePic, upcomingSessions: $upcomingSessions)';
+    return 'FirebaseUser(email: $email, name: $name, profilePic: $profilePic, teacher: $teacher, upcomingSessions: $upcomingSessions)';
   }
 
   @override
@@ -78,6 +73,7 @@ class FirebaseUser {
         other.email == email &&
         other.name == name &&
         other.profilePic == profilePic &&
+        other.teacher == teacher &&
         listEquals(other.upcomingSessions, upcomingSessions);
   }
 
@@ -86,6 +82,7 @@ class FirebaseUser {
     return email.hashCode ^
         name.hashCode ^
         profilePic.hashCode ^
+        teacher.hashCode ^
         upcomingSessions.hashCode;
   }
 }

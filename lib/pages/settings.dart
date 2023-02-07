@@ -49,17 +49,43 @@ class _SettingsState extends ConsumerState<Settings> {
             const Center(
               child: Text("Tap Image to Change"),
             ),
-            TextFormField(
-              decoration: const InputDecoration(labelText: "Enter Your Name"),
-              controller: _nameController,
+            const SizedBox(
+              height: 40,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextFormField(
+                decoration: const InputDecoration(labelText: "Enter Your Name"),
+                controller: _nameController,
+              ),
             ),
             TextButton(
-                onPressed: () {
-                  ref
-                      .read(userProvider.notifier)
-                      .updateName(_nameController.text);
-                },
-                child: const Text("Update"))
+              onPressed: () {
+                ref
+                    .read(userProvider.notifier)
+                    .updateName(_nameController.text);
+              },
+              child: const Text("Update"),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                currentUser.user.teacher
+                    ? const Text("Toggle to change to a student account")
+                    : const Text("Toggle to change to a teacher account"),
+                Switch(
+                  value: currentUser.user.teacher,
+                  onChanged: (newValue) {
+                    ref
+                        .read(userProvider.notifier)
+                        .updateTeacherStatus(newValue);
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),

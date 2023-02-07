@@ -98,34 +98,36 @@ class Home extends ConsumerWidget {
         ],
       ),
       endDrawer: Drawer(
-          child: Column(
-        children: [
-          Image.network(
-            currentUser.user.profilePic,
-          ),
-          ListTile(
-            title: Text(
-              "Hello, ${currentUser.user.name}",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        child: Column(
+          children: [
+            Image.network(
+              currentUser.user.profilePic,
             ),
-          ),
-          ListTile(
-            title: const Text("Settings"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const Settings()));
-            },
-          ),
-          ListTile(
-            title: const Text("Sign Out"),
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              ref.read(userProvider.notifier).logout();
-            },
-          )
-        ],
-      )),
+            ListTile(
+              title: Text(
+                "Hello, ${currentUser.user.name}",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            ListTile(
+              title: const Text("Settings"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Settings()));
+              },
+            ),
+            ListTile(
+              title: const Text("Sign Out"),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                ref.read(userProvider.notifier).logout();
+              },
+            )
+          ],
+        ),
+      ),
       body: CustomScrollView(
         slivers: [
           SliverList(
@@ -144,10 +146,12 @@ class Home extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text("Schedule Session"),
-      ),
+      floatingActionButton: currentUser.user.teacher
+          ? FloatingActionButton.extended(
+              onPressed: () {},
+              label: const Text("Schedule Session"),
+            )
+          : Container(),
     );
   }
 }
