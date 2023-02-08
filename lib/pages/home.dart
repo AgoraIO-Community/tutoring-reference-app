@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../models/session.dart';
 import '../providers/user_provider.dart';
@@ -45,28 +46,96 @@ class Home extends ConsumerWidget {
             decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: const BorderRadius.all(Radius.circular(20))),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    sessions[index].teacherPic,
-                  ),
-                  onBackgroundImageError: (exception, stackTrace) {},
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        sessions[index].teacherPic,
+                      ),
+                      onBackgroundImageError: (exception, stackTrace) {},
+                    ),
+                    const SizedBox(width: 20.0),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          sessions[index].className,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          sessions[index].subject,
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: "Taught by: ",
+                            style: DefaultTextStyle.of(context).style,
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: sessions[index].teacherName,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const Spacer(),
+                    if (forCurrentUser)
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.lightGreen.shade400),
+                          shadowColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: const [
+                            Text("Join "),
+                            Icon(Icons.phone),
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return const CreateSession();
+                            }),
+                          );
+                        },
+                      ),
+                  ],
                 ),
-                const SizedBox(width: 8.0),
-                Column(
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      sessions[index].teacherName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    const Text("When: ",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      width: 4,
                     ),
                     Text(
-                      sessions[index].subject,
-                      style: const TextStyle(),
+                      "${DateFormat.yMMMMd('en_US').format(sessions[index].time)}\n${DateFormat("hh:mm a").format(sessions[index].time)}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                   ],
                 ),
