@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tutor/models/session.dart';
 
 import '../models/user.dart';
 
@@ -114,5 +115,44 @@ class UserNotifier extends StateNotifier<LocalUser> {
           teacher: false,
           upcomingSessions: []),
     );
+  }
+
+  Future<void> scheduleSession(Session session) async {
+    DocumentReference docRef =
+        await _firestore.collection("sessions").add(session.toMap());
+    await _firestore.collection("users").doc(state.id).update({
+      'upcomingSessions': FieldValue.arrayUnion([docRef.id])
+    });
+    state = state.copyWith(
+        user: state.user.copyWith(
+            upcomingSessions: [...state.user.upcomingSessions, docRef.id]));
+  }
+
+  Future<List<Session>> getUpcomingUserSessions() async {
+    List<Session> sessions = [];
+    for (String sessionId in state.user.upcomingSessions) {
+      DocumentSnapshot snapshot =
+          await _firestore.collection("sessions").doc(sessionId).get();
+      sessions.add(Session.fromMap(snapshot.data() as Map<String, dynamic>));
+    }
+    return sessions;
+  }
+
+  Future<Session> getSession(String sessionId) async {
+    DocumentSnapshot snapshot =
+        await _firestore.collection("sessions").doc(sessionId).get();
+    Session session = Session.fromMap(snapshot.data() as Map<String, dynamic>);
+    return session;
+  }
+
+  Future<List<Session>> getAllOtherSessions() async {
+    QuerySnapshot response = await _firestore.collection("sessions").get();
+    List<Session> sessions = [];
+    if (state.id == "error") return [];
+    for (DocumentSnapshot snapshot in response.docs) {
+      if (state.user.upcomingSessions.contains(snapshot.id)) continue;
+      sessions.add(Session.fromMap(snapshot.data() as Map<String, dynamic>));
+    }
+    return sessions;
   }
 }

@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/session.dart';
 import '../providers/user_provider.dart';
+import 'create.dart';
 import 'settings.dart';
 
 class Home extends ConsumerWidget {
@@ -12,23 +14,28 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     LocalUser currentUser = ref.watch(userProvider);
 
-    ListView upcomingSessions() {
-      if (currentUser.user.upcomingSessions.isEmpty) {
+    ListView sessionList(List<Session> sessions,
+        {required bool forCurrentUser}) {
+      if (sessions.isEmpty) {
         return ListView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           children: [
             Container(
               margin: const EdgeInsets.only(top: 20.0, left: 16, right: 16),
-              child: const Text(
-                "No upcoming sessions, schedule a seesion using the button below",
-              ),
+              child: forCurrentUser
+                  ? const Text(
+                      "No upcoming sessions, schedule a session using the button below",
+                    )
+                  : const Text(
+                      "No other sessions available, please wait for a teacher to create a session",
+                    ),
             ),
           ],
         );
       }
       return ListView.builder(
-        itemCount: currentUser.user.upcomingSessions.length,
+        itemCount: sessions.length,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
@@ -42,7 +49,7 @@ class Home extends ConsumerWidget {
               children: [
                 CircleAvatar(
                   backgroundImage: NetworkImage(
-                    currentUser.user.upcomingSessions[index].teacherPic,
+                    sessions[index].teacherPic,
                   ),
                   onBackgroundImageError: (exception, stackTrace) {},
                 ),
@@ -51,14 +58,14 @@ class Home extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      currentUser.user.upcomingSessions[index].teacherName,
+                      sessions[index].teacherName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     Text(
-                      currentUser.user.upcomingSessions[index].subject,
+                      sessions[index].subject,
                       style: const TextStyle(),
                     ),
                   ],
@@ -136,11 +143,30 @@ class Home extends ConsumerWidget {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, top: 16),
                   child: Text(
-                    "Upcoming Sessions",
+                    "Your Upcoming Sessions",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
-                upcomingSessions(),
+                FutureBuilder(
+                  future:
+                      ref.read(userProvider.notifier).getUpcomingUserSessions(),
+                  builder: (context, data) {
+                    return sessionList(data.data ?? [], forCurrentUser: true);
+                  },
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 16.0, top: 16),
+                  child: Text(
+                    "All Sessions",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                ),
+                FutureBuilder(
+                  future: ref.read(userProvider.notifier).getAllOtherSessions(),
+                  builder: (context, data) {
+                    return sessionList(data.data ?? [], forCurrentUser: false);
+                  },
+                ),
               ],
             ),
           ),
@@ -148,7 +174,12 @@ class Home extends ConsumerWidget {
       ),
       floatingActionButton: currentUser.user.teacher
           ? FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return const CreateSession();
+                }));
+              },
               label: const Text("Schedule Session"),
             )
           : Container(),

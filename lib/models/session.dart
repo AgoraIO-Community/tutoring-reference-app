@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Session {
   final String teacherName;
   final String teacherPic;
   final String? student;
   final String subject;
+  final String className;
   final DateTime time;
 
   Session({
@@ -14,6 +13,7 @@ class Session {
     required this.teacherPic,
     this.student,
     required this.subject,
+    required this.className,
     required this.time,
   });
 
@@ -22,6 +22,7 @@ class Session {
     String? teacherPic,
     String? student,
     String? subject,
+    String? className,
     DateTime? time,
   }) {
     return Session(
@@ -29,6 +30,7 @@ class Session {
       teacherPic: teacherPic ?? this.teacherPic,
       student: student ?? this.student,
       subject: subject ?? this.subject,
+      className: className ?? this.className,
       time: time ?? this.time,
     );
   }
@@ -39,6 +41,7 @@ class Session {
       'teacherPic': teacherPic,
       'student': student,
       'subject': subject,
+      'className': className,
       'time': time.millisecondsSinceEpoch,
     };
   }
@@ -49,8 +52,8 @@ class Session {
       teacherPic: map['teacherPic'] ?? '',
       student: map['student'],
       subject: map['subject'] ?? '',
-      time: DateTime.fromMillisecondsSinceEpoch(
-          (map['time'] as Timestamp).millisecondsSinceEpoch),
+      className: map['className'] ?? '',
+      time: DateTime.fromMillisecondsSinceEpoch(map['time']),
     );
   }
 
@@ -61,7 +64,7 @@ class Session {
 
   @override
   String toString() {
-    return 'Session(teacherName: $teacherName, teacherPic: $teacherPic, student: $student, subject: $subject, time: $time)';
+    return 'Session(teacherName: $teacherName, teacherPic: $teacherPic, student: $student, subject: $subject, className: $className, time: $time)';
   }
 
   @override
@@ -73,6 +76,7 @@ class Session {
         other.teacherPic == teacherPic &&
         other.student == student &&
         other.subject == subject &&
+        other.className == className &&
         other.time == time;
   }
 
@@ -82,6 +86,7 @@ class Session {
         teacherPic.hashCode ^
         student.hashCode ^
         subject.hashCode ^
+        className.hashCode ^
         time.hashCode;
   }
 }

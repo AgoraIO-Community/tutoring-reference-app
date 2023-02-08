@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:tutor/models/session.dart';
 
 class FirebaseUser {
   final String email;
   final String name;
   final String profilePic;
   final bool teacher;
-  final List<Session> upcomingSessions;
+  final List<String> upcomingSessions;
 
   const FirebaseUser({
     required this.email,
@@ -23,7 +22,7 @@ class FirebaseUser {
     String? name,
     String? profilePic,
     bool? teacher,
-    List<Session>? upcomingSessions,
+    List<String>? upcomingSessions,
   }) {
     return FirebaseUser(
       email: email ?? this.email,
@@ -40,7 +39,7 @@ class FirebaseUser {
       'name': name,
       'profilePic': profilePic,
       'teacher': teacher,
-      'upcomingSessions': upcomingSessions.map((x) => x.toMap()).toList(),
+      'upcomingSessions': upcomingSessions,
     };
   }
 
@@ -50,8 +49,7 @@ class FirebaseUser {
       name: map['name'] ?? '',
       profilePic: map['profilePic'] ?? '',
       teacher: map['teacher'] ?? false,
-      upcomingSessions: List<Session>.from(
-          map['upcomingSessions']?.map((x) => Session.fromMap(x)) ?? []),
+      upcomingSessions: List<String>.from(map['upcomingSessions'] ?? []),
     );
   }
 
