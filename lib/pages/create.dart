@@ -12,12 +12,11 @@ class CreateSession extends ConsumerStatefulWidget {
 }
 
 class _CreateSessionState extends ConsumerState<CreateSession> {
+  bool value = false;
   final TextEditingController className = TextEditingController();
   String subject = "Math";
 
-  DateTime totalDate = DateTime.now();
-  DateTime selectedDate = DateTime.now();
-  TimeOfDay selectedTime = TimeOfDay.now();
+  DateTime lectureDate = DateTime.now();
 
   final GlobalKey<FormState> _classKey = GlobalKey<FormState>();
 
@@ -29,7 +28,7 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
         title: const Text("Create Session"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: Form(
           key: _classKey,
           child: Column(
@@ -46,9 +45,33 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text("Select Subject:",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(width: 20),
+                  AnimatedDefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: value ? 14 : 16,
+                      fontWeight: value ? FontWeight.normal : FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    duration: const Duration(milliseconds: 200),
+                    child: const Text("Lecture"),
+                  ),
+                  Switch(
+                    value: value,
+                    onChanged: (changedValue) {
+                      setState(() {
+                        value = changedValue;
+                      });
+                    },
+                  ),
+                  AnimatedDefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: value ? 16 : 14,
+                      fontWeight: value ? FontWeight.bold : FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                    duration: const Duration(milliseconds: 200),
+                    child: const Text("1-1"),
+                  ),
+                  const Spacer(),
                   DropdownButton<String>(
                     value: subject,
                     items: const <DropdownMenuItem<String>>[
@@ -78,28 +101,31 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
                         subject = value!;
                       });
                     },
-                  ),
+                  )
                 ],
               ),
               const SizedBox(height: 20),
               const Text(
-                "Select Date and Time:",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                "Date and Time:",
+                style: TextStyle(fontSize: 16),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Column(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
-                    "${DateFormat.yMMMMd('en_US').format(totalDate)} \n${DateFormat.jm().format(totalDate)}",
+                    "${DateFormat.yMMMMd('en_US').format(lectureDate)}    ${DateFormat.jm().format(lectureDate)}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   const SizedBox(width: 20),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TextButton(
                         onPressed: () async {
+                          DateTime selectedDate = DateTime.now();
                           selectedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
@@ -108,7 +134,7 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
                                     .add(const Duration(days: 365)),
                               ) ??
                               DateTime.now();
-                          totalDate = totalDate.copyWith(
+                          lectureDate = lectureDate.copyWith(
                             year: selectedDate.year,
                             month: selectedDate.month,
                             day: selectedDate.day,
@@ -117,15 +143,15 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
                         },
                         child: const Text("Change Date"),
                       ),
-                      const SizedBox(width: 20),
                       TextButton(
                         onPressed: () async {
+                          TimeOfDay selectedTime = TimeOfDay.now();
                           selectedTime = await showTimePicker(
                                 context: context,
                                 initialTime: TimeOfDay.now(),
                               ) ??
                               TimeOfDay.now();
-                          totalDate = totalDate.copyWith(
+                          lectureDate = lectureDate.copyWith(
                             hour: selectedTime.hour,
                             minute: selectedTime.minute,
                           );
@@ -149,7 +175,7 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
                   Session(
                     className: className.text,
                     subject: subject,
-                    time: totalDate,
+                    time: lectureDate,
                     teacherName: currentUser.user.name,
                     teacherPic: currentUser.user.profilePic,
                   ),

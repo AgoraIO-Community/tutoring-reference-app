@@ -41,6 +41,7 @@ dependencies:
   firebase_storage: ^11.0.10
   image_picker: ^0.8.6+1
   intl: ^0.17.0
+  agora_uikit: ^1.1.2
 
 dev_dependencies:
   flutter_test:

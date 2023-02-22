@@ -1,4 +1,7 @@
 # This is a generated file; do not edit or check into version control.
+agora_rtc_engine=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/agora_rtc_engine-6.1.0/
+agora_rtm=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/agora_rtm-1.5.0/
+agora_uikit=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/agora_uikit-1.1.2/
 cloud_firestore=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/cloud_firestore-4.3.1/
 cloud_firestore_web=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/cloud_firestore_web-3.2.1/
 firebase_auth=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/firebase_auth-4.2.5/
@@ -12,3 +15,8 @@ image_picker=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/image_picker-0.8.6+
 image_picker_android=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/image_picker_android-0.8.5+5/
 image_picker_for_web=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/image_picker_for_web-2.1.10/
 image_picker_ios=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/image_picker_ios-0.8.6+6/
+iris_event=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/iris_event-2.0.0/
+permission_handler=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/permission_handler-10.2.0/
+permission_handler_android=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/permission_handler_android-10.2.0/
+permission_handler_apple=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/permission_handler_apple-9.0.7/
+permission_handler_windows=/Users/tadaspetraitis/.pub-cache/hosted/pub.dev/permission_handler_windows-0.1.2/

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:tutor/pages/class.dart';
 
 import '../models/session.dart';
 import '../providers/user_provider.dart';
@@ -112,7 +113,13 @@ class Home extends ConsumerWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) {
-                              return const CreateSession();
+                              // use `upcomingSessions` instead of `sessions` to get the clubId
+                              //the `sessions` doesn't hold the clubId
+                              return ClassCall(
+                                clubId:
+                                    currentUser.user.upcomingSessions[index],
+                                username: currentUser.user.name,
+                              );
                             }),
                           );
                         },
