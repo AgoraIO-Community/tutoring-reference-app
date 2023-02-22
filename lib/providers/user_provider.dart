@@ -128,12 +128,23 @@ class UserNotifier extends StateNotifier<LocalUser> {
             upcomingSessions: [...state.user.upcomingSessions, docRef.id]));
   }
 
-  Future<List<Session>> getUpcomingUserSessions() async {
-    List<Session> sessions = [];
+  Future<void> joinSession(String sessionId) async {
+    await _firestore.collection("users").doc(state.id).update({
+      'upcomingSessions': FieldValue.arrayUnion([sessionId])
+    });
+    state = state.copyWith(
+        user: state.user.copyWith(
+            upcomingSessions: [...state.user.upcomingSessions, sessionId]));
+  }
+
+  Future<List<SessionWithId>> getUpcomingUserSessions() async {
+    List<SessionWithId> sessions = [];
     for (String sessionId in state.user.upcomingSessions) {
       DocumentSnapshot snapshot =
           await _firestore.collection("sessions").doc(sessionId).get();
-      sessions.add(Session.fromMap(snapshot.data() as Map<String, dynamic>));
+      sessions.add(SessionWithId(
+          id: snapshot.id,
+          session: Session.fromMap(snapshot.data() as Map<String, dynamic>)));
     }
     return sessions;
   }
@@ -145,13 +156,15 @@ class UserNotifier extends StateNotifier<LocalUser> {
     return session;
   }
 
-  Future<List<Session>> getAllOtherSessions() async {
+  Future<List<SessionWithId>> getAllOtherSessions() async {
     QuerySnapshot response = await _firestore.collection("sessions").get();
-    List<Session> sessions = [];
+    List<SessionWithId> sessions = [];
     if (state.id == "error") return [];
     for (DocumentSnapshot snapshot in response.docs) {
       if (state.user.upcomingSessions.contains(snapshot.id)) continue;
-      sessions.add(Session.fromMap(snapshot.data() as Map<String, dynamic>));
+      sessions.add(SessionWithId(
+          id: snapshot.id,
+          session: Session.fromMap(snapshot.data() as Map<String, dynamic>)));
     }
     return sessions;
   }

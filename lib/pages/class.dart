@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../consts.dart';
 
 class ClassCall extends StatefulWidget {
-  final String clubId;
+  final String sessionId;
   final String username;
-  const ClassCall({Key? key, required this.clubId, required this.username})
+  const ClassCall({Key? key, required this.sessionId, required this.username})
       : super(key: key);
 
   @override

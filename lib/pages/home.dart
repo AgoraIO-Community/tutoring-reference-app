@@ -16,7 +16,7 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     LocalUser currentUser = ref.watch(userProvider);
 
-    ListView sessionList(List<Session> sessions,
+    ListView sessionList(List<SessionWithId> sessions,
         {required bool forCurrentUser}) {
       if (sessions.isEmpty) {
         return ListView(
@@ -54,7 +54,7 @@ class Home extends ConsumerWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        sessions[index].teacherPic,
+                        sessions[index].session.teacherPic,
                       ),
                       onBackgroundImageError: (exception, stackTrace) {},
                     ),
@@ -63,14 +63,11 @@ class Home extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          sessions[index].className,
+                          sessions[index].session.className,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
-                        ),
-                        Text(
-                          sessions[index].subject,
                         ),
                         const SizedBox(
                           height: 4,
@@ -81,13 +78,58 @@ class Home extends ConsumerWidget {
                             style: DefaultTextStyle.of(context).style,
                             children: <TextSpan>[
                               TextSpan(
-                                  text: sessions[index].teacherName,
+                                  text: sessions[index].session.teacherName,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold)),
                             ],
                           ),
                         )
                       ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 60,
+                    ),
+                    Chip(
+                      labelStyle: const TextStyle(fontSize: 12),
+                      label: Text(sessions[index].session.subject),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    (sessions[index].session.isLecture)
+                        ? Chip(
+                            labelStyle: const TextStyle(fontSize: 12),
+                            label: const Text("Lecture"),
+                            backgroundColor: Colors.green.shade100,
+                          )
+                        : Chip(
+                            labelStyle: const TextStyle(fontSize: 12),
+                            label: const Text("1-1 session"),
+                            backgroundColor: Colors.blue.shade100,
+                          ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("When: ",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      "${DateFormat.yMMMMd('en_US').format(sessions[index].session.time)}\n${DateFormat("hh:mm a").format(sessions[index].session.time)}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
                     ),
                     const Spacer(),
                     if (forCurrentUser)
@@ -116,34 +158,41 @@ class Home extends ConsumerWidget {
                               // use `upcomingSessions` instead of `sessions` to get the clubId
                               //the `sessions` doesn't hold the clubId
                               return ClassCall(
-                                clubId:
-                                    currentUser.user.upcomingSessions[index],
+                                sessionId: sessions[index].id,
                                 username: currentUser.user.name,
                               );
                             }),
                           );
                         },
+                      )
+                    else
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.lightGreen.shade400),
+                          shadowColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: const [
+                            Text("Attend "),
+                            Icon(
+                              Icons.add,
+                              size: 18,
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          ref.read(userProvider.notifier).joinSession(
+                                sessions[index].id,
+                              );
+                        },
                       ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("When: ",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      "${DateFormat.yMMMMd('en_US').format(sessions[index].time)}\n${DateFormat("hh:mm a").format(sessions[index].time)}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
                   ],
                 ),
               ],
