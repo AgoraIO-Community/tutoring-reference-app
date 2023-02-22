@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pay/pay.dart';
+import 'package:tutor/consts.dart';
 import 'package:tutor/pages/class.dart';
 
 import '../models/session.dart';
@@ -135,6 +137,9 @@ class Home extends ConsumerWidget {
                     if (forCurrentUser)
                       ElevatedButton(
                         style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 8)),
                           backgroundColor: MaterialStateProperty.all(
                               Colors.lightGreen.shade400),
                           shadowColor:
@@ -166,32 +171,44 @@ class Home extends ConsumerWidget {
                         },
                       )
                     else
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.lightGreen.shade400),
-                          shadowColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
+                      Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.black,
+                            ),
+                            height: 40,
+                            width: 110,
+                            margin: const EdgeInsets.only(top: 15),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            child: ApplePayButton(
+                              paymentConfiguration:
+                                  PaymentConfiguration.fromJsonString(
+                                      defaultApplePay),
+                              paymentItems: const [
+                                PaymentItem(
+                                  label: 'Total',
+                                  amount: '0.01',
+                                  status: PaymentItemStatus.final_price,
+                                )
+                              ],
+                              style: ApplePayButtonStyle.black,
+                              type: ApplePayButtonType.book,
+                              margin: const EdgeInsets.only(top: 15.0),
+                              onPaymentResult: (result) {
+                                ref.read(userProvider.notifier).joinSession(
+                                      sessions[index].id,
+                                    );
+                              },
+                              loadingIndicator: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             ),
                           ),
-                        ),
-                        child: Row(
-                          children: const [
-                            Text("Attend "),
-                            Icon(
-                              Icons.add,
-                              size: 18,
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          ref.read(userProvider.notifier).joinSession(
-                                sessions[index].id,
-                              );
-                        },
+                        ],
                       ),
                   ],
                 ),

@@ -47,7 +47,8 @@ class FirebaseUser {
     return FirebaseUser(
       email: map['email'] ?? '',
       name: map['name'] ?? '',
-      profilePic: map['profilePic'] ?? '',
+      profilePic: map['profilePic'] ??
+          "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png",
       teacher: map['teacher'] ?? false,
       upcomingSessions: List<String>.from(map['upcomingSessions'] ?? []),
     );

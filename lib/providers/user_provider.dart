@@ -36,7 +36,8 @@ class UserNotifier extends StateNotifier<LocalUser> {
             user: FirebaseUser(
                 email: "error",
                 name: "error",
-                profilePic: "error",
+                profilePic:
+                    "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png",
                 teacher: false,
                 upcomingSessions: []),
           ),
@@ -51,11 +52,11 @@ class UserNotifier extends StateNotifier<LocalUser> {
         .where('email', isEqualTo: email)
         .get();
     if (response.docs.isEmpty) {
-      print("No firestore user associated to authenticated email $email");
+      //No firestore user associated to authenticated email
       return;
     }
     if (response.docs.length != 1) {
-      print("More than one firestore user associate with email: $email");
+      //More than one firestore user associate with email
       return;
     }
     state = LocalUser(
