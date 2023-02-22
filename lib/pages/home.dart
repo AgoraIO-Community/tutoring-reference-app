@@ -299,7 +299,7 @@ class Home extends ConsumerWidget {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, top: 16),
                   child: Text(
-                    "All Sessions",
+                    "Other Sessions",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
