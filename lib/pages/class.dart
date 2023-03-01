@@ -49,6 +49,7 @@ class _ClassCallState extends State<ClassCall> {
               ),
               AgoraVideoButtons(
                 client: client,
+                onDisconnect: () => Navigator.pop(context),
               ),
             ],
           ),

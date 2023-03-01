@@ -29,7 +29,7 @@ class Home extends ConsumerWidget {
               margin: const EdgeInsets.only(top: 20.0, left: 16, right: 16),
               child: forCurrentUser
                   ? const Text(
-                      "No upcoming sessions, schedule a session using the button below",
+                      "No upcoming sessions, join one of the sessions below",
                     )
                   : const Text(
                       "No other sessions available, please wait for a teacher to create a session",
