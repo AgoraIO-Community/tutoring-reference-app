@@ -18,6 +18,7 @@ class _ClassCallState extends State<ClassCall> {
     agoraConnectionData: AgoraConnectionData(
       appId: appId,
       channelName: "test",
+      username: "tadas",
     ),
   );
 
