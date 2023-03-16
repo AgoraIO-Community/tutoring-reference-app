@@ -19,6 +19,9 @@ class _ClassCallState extends State<ClassCall> {
       appId: appId,
       channelName: "test",
       username: "tadas",
+      tokenUrl: tokenUrl,
+      cloudRecordingUrl: cloudRecordingUrl,
+      // screenSharingEnabled: true,
     ),
   );
 
@@ -51,6 +54,8 @@ class _ClassCallState extends State<ClassCall> {
               AgoraVideoButtons(
                 client: client,
                 onDisconnect: () => Navigator.pop(context),
+                cloudRecordingEnabled: true,
+                // addScreenSharing: true,
               ),
             ],
           ),

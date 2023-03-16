@@ -14,7 +14,7 @@ class CreateSession extends ConsumerStatefulWidget {
 class _CreateSessionState extends ConsumerState<CreateSession> {
   bool value = false;
   final TextEditingController className = TextEditingController();
-  String subject = "Math";
+  String subject = "Spanish";
 
   DateTime lectureDate = DateTime.now();
 
@@ -76,24 +76,20 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
                     value: subject,
                     items: const <DropdownMenuItem<String>>[
                       DropdownMenuItem<String>(
-                        value: "Math",
-                        child: Text("Math"),
+                        value: "Spanish",
+                        child: Text("Spanish"),
                       ),
                       DropdownMenuItem<String>(
-                        value: "Science",
-                        child: Text("Science"),
+                        value: "Polish",
+                        child: Text("Polish"),
                       ),
                       DropdownMenuItem<String>(
                         value: "English",
                         child: Text("English"),
                       ),
                       DropdownMenuItem<String>(
-                        value: "History",
-                        child: Text("History"),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "Computer Science",
-                        child: Text("Computer Science"),
+                        value: "German",
+                        child: Text("German"),
                       ),
                     ],
                     onChanged: (String? value) {
