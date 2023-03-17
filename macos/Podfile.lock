@@ -596,13 +596,40 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - agora_rtc_engine (0.0.1):
+    - AgoraIrisRTC_macOS (= 4.1.0-rc.2)
+    - AgoraRtcEngine_macOS (= 4.1.0)
+    - FlutterMacOS
+  - AgoraIrisEventFlutter_macOS (2.0.0)
+  - AgoraIrisRTC_macOS (4.1.0-rc.2)
+  - AgoraRtcEngine_macOS (4.1.0):
+    - AgoraRtcEngine_macOS/AIAEC (= 4.1.0)
+    - AgoraRtcEngine_macOS/AINS (= 4.1.0)
+    - AgoraRtcEngine_macOS/AudioBeauty (= 4.1.0)
+    - AgoraRtcEngine_macOS/ClearVision (= 4.1.0)
+    - AgoraRtcEngine_macOS/ContentInspect (= 4.1.0)
+    - AgoraRtcEngine_macOS/DRM (= 4.1.0)
+    - AgoraRtcEngine_macOS/RtcBasic (= 4.1.0)
+    - AgoraRtcEngine_macOS/SpatialAudio (= 4.1.0)
+    - AgoraRtcEngine_macOS/VirtualBackground (= 4.1.0)
+    - AgoraRtcEngine_macOS/VQA (= 4.1.0)
+  - AgoraRtcEngine_macOS/AIAEC (4.1.0)
+  - AgoraRtcEngine_macOS/AINS (4.1.0)
+  - AgoraRtcEngine_macOS/AudioBeauty (4.1.0)
+  - AgoraRtcEngine_macOS/ClearVision (4.1.0)
+  - AgoraRtcEngine_macOS/ContentInspect (4.1.0)
+  - AgoraRtcEngine_macOS/DRM (4.1.0)
+  - AgoraRtcEngine_macOS/RtcBasic (4.1.0)
+  - AgoraRtcEngine_macOS/SpatialAudio (4.1.0)
+  - AgoraRtcEngine_macOS/VirtualBackground (4.1.0)
+  - AgoraRtcEngine_macOS/VQA (4.1.0)
   - BoringSSL-GRPC (0.0.24):
     - BoringSSL-GRPC/Implementation (= 0.0.24)
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Implementation (0.0.24):
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
-  - cloud_firestore (4.3.1):
+  - cloud_firestore (4.4.4):
     - Firebase/CoreOnly (~> 10.3.0)
     - Firebase/Firestore (~> 10.3.0)
     - firebase_core
@@ -619,15 +646,15 @@ PODS:
   - Firebase/Storage (10.3.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.3.0)
-  - firebase_auth (4.2.5):
+  - firebase_auth (4.2.10):
     - Firebase/Auth (~> 10.3.0)
     - Firebase/CoreOnly (~> 10.3.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (2.4.1):
+  - firebase_core (2.7.1):
     - Firebase/CoreOnly (~> 10.3.0)
     - FlutterMacOS
-  - firebase_storage (11.0.10):
+  - firebase_storage (11.0.15):
     - Firebase/CoreOnly (~> 10.3.0)
     - Firebase/Storage (~> 10.3.0)
     - firebase_core
@@ -734,6 +761,9 @@ PODS:
     - Libuv-gRPC (= 0.0.10)
   - gRPC-Core/Interface (1.44.0)
   - GTMSessionFetcher/Core (3.1.0)
+  - iris_event (0.0.1):
+    - AgoraIrisEventFlutter_macOS (= 2.0.0)
+    - FlutterMacOS
   - leveldb-library (1.22.1)
   - Libuv-gRPC (0.0.10):
     - Libuv-gRPC/Implementation (= 0.0.10)
@@ -749,15 +779,20 @@ PODS:
   - PromisesObjC (2.1.1)
 
 DEPENDENCIES:
+  - agora_rtc_engine (from `Flutter/ephemeral/.symlinks/plugins/agora_rtc_engine/macos`)
   - cloud_firestore (from `Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos`)
   - firebase_auth (from `Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - firebase_storage (from `Flutter/ephemeral/.symlinks/plugins/firebase_storage/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
+  - iris_event (from `Flutter/ephemeral/.symlinks/plugins/iris_event/macos`)
 
 SPEC REPOS:
   trunk:
     - abseil
+    - AgoraIrisEventFlutter_macOS
+    - AgoraIrisRTC_macOS
+    - AgoraRtcEngine_macOS
     - BoringSSL-GRPC
     - Firebase
     - FirebaseAppCheckInterop
@@ -778,6 +813,8 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  agora_rtc_engine:
+    :path: Flutter/ephemeral/.symlinks/plugins/agora_rtc_engine/macos
   cloud_firestore:
     :path: Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos
   firebase_auth:
@@ -788,15 +825,21 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_storage/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
+  iris_event:
+    :path: Flutter/ephemeral/.symlinks/plugins/iris_event/macos
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
+  agora_rtc_engine: 66e8168cc1facc5fffd751021e80fee9031a7f33
+  AgoraIrisEventFlutter_macOS: 5e70ca5f37ccae44efcf8cc0ebd616b60f513263
+  AgoraIrisRTC_macOS: 5bed4136e6f88e54ea3472857a01154fd409dc79
+  AgoraRtcEngine_macOS: 35a0ad69ed2d5fa0632d751f41b09c5c9538ee59
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
-  cloud_firestore: 3e5af176ee7502d00c95e031a06d6728ac0dc39b
+  cloud_firestore: 58eb550d5faf6988f933b66ef86e21b3f1bc0858
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
-  firebase_auth: c6e7c32d1b546266e34a991986e3abf546a31638
-  firebase_core: 651a84636254f758b9b9367f27bef0801a3855a2
-  firebase_storage: feb362378dda87269e17c761e00cab73b684ece4
+  firebase_auth: 7374c936c4610c7f5d02a3db00ed4519c3dd3e92
+  firebase_core: 82d0bad907d4128050efaaaa978f9d313b2ef167
+  firebase_storage: 00e48bd311f1862abacd81eef75fdcc74e046224
   FirebaseAppCheckInterop: ef074633831a90cf6c10e8f2c1e1f8b7842a446a
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
   FirebaseAuthInterop: fef284922da3c350f846ff85cc0dfd5186448e49
@@ -810,6 +853,7 @@ SPEC CHECKSUMS:
   "gRPC-C++": 9675f953ace2b3de7c506039d77be1f2e77a8db2
   gRPC-Core: 943e491cb0d45598b0b0eb9e910c88080369290b
   GTMSessionFetcher: c9e714f7eec91a55641e2bab9f45fd83a219b882
+  iris_event: f12d7c4b6ee729c4dbd394cd374d9ddb4db56ad4
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431

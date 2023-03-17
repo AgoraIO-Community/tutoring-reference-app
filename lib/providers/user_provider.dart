@@ -110,11 +110,13 @@ class UserNotifier extends StateNotifier<LocalUser> {
     state = const LocalUser(
       id: "error",
       user: FirebaseUser(
-          email: "error",
-          name: "error",
-          profilePic: "error",
-          teacher: false,
-          upcomingSessions: []),
+        email: "error",
+        name: "error",
+        profilePic:
+            "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png",
+        teacher: false,
+        upcomingSessions: [],
+      ),
     );
   }
 
