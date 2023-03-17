@@ -103,7 +103,15 @@ class Home extends ConsumerWidget {
                   future: ref.read(userProvider.notifier).getAllOtherSessions(),
                   builder: (context, data) {
                     return SessionList(
-                        sessions: data.data ?? [], forCurrentUser: false);
+                      sessions: (data.data != null)
+                          ? data.data!
+                              .where((element) =>
+                                  element.session.isLecture ||
+                                  (element.session.students.isEmpty))
+                              .toList()
+                          : [],
+                      forCurrentUser: false,
+                    );
                   },
                 ),
               ],

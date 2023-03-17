@@ -1,19 +1,21 @@
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tutor/providers/user_provider.dart';
 
 import '../consts.dart';
 
-class ClassCall extends StatefulWidget {
+class ClassCall extends ConsumerStatefulWidget {
   final String sessionId;
   final String username;
   const ClassCall({Key? key, required this.sessionId, required this.username})
       : super(key: key);
 
   @override
-  State<ClassCall> createState() => _ClassCallState();
+  ConsumerState<ClassCall> createState() => _ClassCallState();
 }
 
-class _ClassCallState extends State<ClassCall> {
+class _ClassCallState extends ConsumerState<ClassCall> {
   AgoraClient client = AgoraClient(
     agoraConnectionData: AgoraConnectionData(
       appId: appId,
@@ -53,7 +55,12 @@ class _ClassCallState extends State<ClassCall> {
               ),
               AgoraVideoButtons(
                 client: client,
-                onDisconnect: () => Navigator.pop(context),
+                onDisconnect: () {
+                  ref
+                      .read(userProvider.notifier)
+                      .checkToRemoveSession(widget.sessionId);
+                  Navigator.pop(context);
+                },
                 cloudRecordingEnabled: true,
                 // addScreenSharing: true,
               ),

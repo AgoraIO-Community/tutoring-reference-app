@@ -201,6 +201,7 @@ class SessionList extends ConsumerWidget {
                             onPaymentResult: (result) {
                               ref.read(userProvider.notifier).joinSession(
                                     sessions[index].id,
+                                    sessions[index].session.isLecture,
                                   );
                             },
                             loadingIndicator: const Center(

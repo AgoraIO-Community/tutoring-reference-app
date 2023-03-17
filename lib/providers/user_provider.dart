@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tutor/models/session.dart';
 
@@ -131,13 +132,42 @@ class UserNotifier extends StateNotifier<LocalUser> {
             upcomingSessions: [...state.user.upcomingSessions, docRef.id]));
   }
 
-  Future<void> joinSession(String sessionId) async {
+  Future<void> joinSession(String sessionId, bool isLecture) async {
     await _firestore.collection("users").doc(state.id).update({
       'upcomingSessions': FieldValue.arrayUnion([sessionId])
     });
+
+    if (!isLecture) {
+      await _firestore.collection("sessions").doc(sessionId).update({
+        'students': FieldValue.arrayUnion([state.id])
+      });
+    }
     state = state.copyWith(
         user: state.user.copyWith(
             upcomingSessions: [...state.user.upcomingSessions, sessionId]));
+  }
+
+  Future<void> checkToRemoveSession(String sessionId) async {
+    try {
+      Session session = await getSession(sessionId);
+      if (session.time.isBefore(DateTime.now())) {
+        await _firestore.collection("users").doc(state.id).update({
+          'upcomingSessions': FieldValue.arrayRemove([sessionId])
+        });
+        await _firestore.collection("sessions").doc(sessionId).delete();
+
+        state = state.copyWith(
+          user: state.user.copyWith(
+            upcomingSessions: state.user.upcomingSessions
+                .where((element) => element != sessionId)
+                .toList(),
+          ),
+        );
+      }
+    } catch (e) {
+      // session doesn't exist, because removed by other user
+      debugPrint(e.toString());
+    }
   }
 
   Future<List<SessionWithId>> getUpcomingUserSessions() async {
@@ -145,6 +175,7 @@ class UserNotifier extends StateNotifier<LocalUser> {
     for (String sessionId in state.user.upcomingSessions) {
       DocumentSnapshot snapshot =
           await _firestore.collection("sessions").doc(sessionId).get();
+      if (snapshot.data() == null) continue;
       sessions.add(SessionWithId(
           id: snapshot.id,
           session: Session.fromMap(snapshot.data() as Map<String, dynamic>)));
