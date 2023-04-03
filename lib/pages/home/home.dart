@@ -114,6 +114,9 @@ class Home extends ConsumerWidget {
                     );
                   },
                 ),
+                const SizedBox(
+                  height: 60,
+                )
               ],
             ),
           ),

@@ -169,7 +169,7 @@ class _CreateSessionState extends ConsumerState<CreateSession> {
             //submit info
             ref.read(userProvider.notifier).scheduleSession(
                   Session(
-                    isLecture: value,
+                    isLecture: !value,
                     className: className.text,
                     subject: subject,
                     students: [],
