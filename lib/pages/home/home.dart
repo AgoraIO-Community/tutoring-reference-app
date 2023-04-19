@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tutor/pages/home/widgets/session_list.dart';
+import 'package:tutor/pages/home/session_list.dart';
 
 import '../../providers/user_provider.dart';
 import '../create.dart';
+import '../recordings/recording_list.dart';
 import '../settings.dart';
 
 class Home extends ConsumerWidget {
@@ -63,12 +64,20 @@ class Home extends ConsumerWidget {
               },
             ),
             ListTile(
+              title: const Text("Class Recordings"),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const RecordingList()));
+              },
+            ),
+            ListTile(
               title: const Text("Sign Out"),
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 ref.read(userProvider.notifier).logout();
               },
-            )
+            ),
           ],
         ),
       ),

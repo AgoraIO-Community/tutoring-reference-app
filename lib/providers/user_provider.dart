@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tutor/models/recording.dart';
 import 'package:tutor/models/session.dart';
 
 import '../models/user.dart';
@@ -201,5 +202,29 @@ class UserNotifier extends StateNotifier<LocalUser> {
           session: Session.fromMap(snapshot.data() as Map<String, dynamic>)));
     }
     return sessions;
+  }
+
+  Future<void> storeRecording(Recording recording) {
+    return _firestore
+        .collection("users")
+        .doc(state.id)
+        .collection("recordings")
+        .add(
+          recording.toMap(),
+        );
+  }
+
+  Future<List<Recording>> getRecordings() async {
+    QuerySnapshot response = await _firestore
+        .collection("users")
+        .doc(state.id)
+        .collection("recordings")
+        .get();
+    List<Recording> recordings = [];
+    for (DocumentSnapshot snapshot in response.docs) {
+      recordings
+          .add(Recording.fromMap(snapshot.data() as Map<String, dynamic>));
+    }
+    return recordings;
   }
 }

@@ -4,6 +4,8 @@ import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:tutor/models/recording.dart';
 import 'package:tutor/providers/user_provider.dart';
 
 import '../consts.dart';
@@ -30,8 +32,17 @@ class _ClassCallState extends ConsumerState<ClassCall> {
         username: "tadas",
         tokenUrl: tokenUrl,
         cloudRecordingUrl: cloudRecordingUrl,
-
-        // screenSharingEnabled: true,
+        cloudRecordingCallback: (mp4, m3u8) {
+          ref.read(userProvider.notifier).storeRecording(
+                Recording(
+                  url: mp4,
+                  sessionId: widget.sessionId,
+                  date:
+                      "${DateFormat.yMMMMd('en_US').format(DateTime.now())}\n${DateFormat("hh:mm a").format(DateTime.now())}",
+                ),
+              );
+        },
+        screenSharingEnabled: true,
       ),
       agoraEventHandlers: AgoraRtcEventHandlers(
         onStreamMessage:
@@ -58,11 +69,12 @@ class _ClassCallState extends ConsumerState<ClassCall> {
   void initAgora() async {
     await client.initialize();
     final response = await http.post(
-      Uri.parse('https://agora-server-hr4b.onrender.com/start-transcribe'),
+      Uri.parse(
+          'https://agora-server-hr4b.onrender.com/start-transcribing/main'),
     );
-
-    taskId = jsonDecode(response.body)['data']['taskId'];
+    taskId = jsonDecode(response.body)['taskId'];
     builderToken = jsonDecode(response.body)['builderToken'];
+
     print("STT -- TASK ID: $taskId --- BUILDER TOKEN: $builderToken");
   }
 
@@ -76,7 +88,6 @@ class _ClassCallState extends ConsumerState<ClassCall> {
 
   final ScrollController _controller = ScrollController();
 
-// This is what you're looking for!
   void _scrollDown() {
     _controller.jumpTo(
       _controller.position.maxScrollExtent + 50,
@@ -84,13 +95,19 @@ class _ClassCallState extends ConsumerState<ClassCall> {
   }
 
   @override
+  void dispose() async {
+    http.get(
+      Uri.parse(
+          'https://agora-server-hr4b.onrender.com/stop-transcribing/$taskId/$builderToken'),
+    );
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Agora VideoUIKit'),
-          centerTitle: true,
-        ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         body: SafeArea(
           child: Stack(
             children: [
@@ -119,17 +136,13 @@ class _ClassCallState extends ConsumerState<ClassCall> {
               AgoraVideoButtons(
                 client: client,
                 onDisconnect: () {
-                  http.delete(
-                    Uri.parse(
-                        'https://agora-server-hr4b.onrender.com/stop-transcribe/$taskId/$builderToken'),
-                  );
                   ref
                       .read(userProvider.notifier)
                       .checkToRemoveSession(widget.sessionId);
                   Navigator.pop(context);
                 },
                 cloudRecordingEnabled: true,
-                // addScreenSharing: true,
+                addScreenSharing: true,
               ),
             ],
           ),

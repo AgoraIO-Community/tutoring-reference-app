@@ -605,6 +605,10 @@ PODS:
     - Flutter
   - agora_uikit (0.0.1):
     - Flutter
+  - AgoraAppGroupDataHelper_iOS (4.0.7)
+  - AgoraBroadcastExtensionHelper_iOS (4.0.7):
+    - AgoraAppGroupDataHelper_iOS (= 4.0.7)
+    - AgoraRtcEngine_iOS (~> 4.1.0)
   - AgoraIrisEventFlutter_iOS (2.0.0)
   - AgoraIrisRTC_iOS (4.1.0-rc.2)
   - AgoraRtcEngine_iOS (4.1.0):
@@ -790,11 +794,14 @@ PODS:
   - permission_handler_apple (9.0.4):
     - Flutter
   - PromisesObjC (2.1.1)
+  - video_player_avfoundation (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - agora_rtm (from `.symlinks/plugins/agora_rtm/ios`)
   - agora_uikit (from `.symlinks/plugins/agora_uikit/ios`)
+  - AgoraBroadcastExtensionHelper_iOS (= 4.0.7)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -804,10 +811,13 @@ DEPENDENCIES:
   - iris_event (from `.symlinks/plugins/iris_event/ios`)
   - pay_ios (from `.symlinks/plugins/pay_ios/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
 
 SPEC REPOS:
   trunk:
     - abseil
+    - AgoraAppGroupDataHelper_iOS
+    - AgoraBroadcastExtensionHelper_iOS
     - AgoraIrisEventFlutter_iOS
     - AgoraIrisRTC_iOS
     - AgoraRtcEngine_iOS
@@ -856,12 +866,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/pay_ios/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
   agora_rtc_engine: a84afbebf11801043623d3b5f994bb69d4159948
   agora_rtm: fe254f84e056f8dbcf878a2a20b9f46aa9e7d0dd
   agora_uikit: ca47b21e2af19474ddd8ec153670c2dc8cf3a9e8
+  AgoraAppGroupDataHelper_iOS: 061a4241d0f2232d2f9d127fd12dbdd63ac18545
+  AgoraBroadcastExtensionHelper_iOS: cd785d98cd0e99757918121ed6068935f7aa5841
   AgoraIrisEventFlutter_iOS: d7ee4acb57d9042dbe9d64229bfe9bf8e32b6f2f
   AgoraIrisRTC_iOS: 820fbab2d78d870a1bad4b1a02f950a390c73b48
   AgoraRtcEngine_iOS: 33f0136ad4196b2a31c8470e6b536fe77fb25f8b
@@ -893,7 +907,8 @@ SPEC CHECKSUMS:
   pay_ios: 8c7beb9c61d885f3f51b61f75f8793023fc8843a
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
 
-PODFILE CHECKSUM: 7368163408c647b7eb699d0d788ba6718e18fb8d
+PODFILE CHECKSUM: 89c5f47b485f049f2be2be84b28b75aa2cef0226
 
 COCOAPODS: 1.11.3

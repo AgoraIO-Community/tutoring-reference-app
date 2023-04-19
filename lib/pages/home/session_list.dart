@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pay/pay.dart';
 
-import '../../../consts.dart';
-import '../../../models/session.dart';
-import '../../../providers/user_provider.dart';
-import '../../class.dart';
+import '../../consts.dart';
+import '../../models/session.dart';
+import '../../providers/user_provider.dart';
+import '../class.dart';
 
 class SessionList extends ConsumerWidget {
   final List<SessionWithId> sessions;
