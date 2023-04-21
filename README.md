@@ -66,37 +66,37 @@ lib
 
 ## App Screens
 <div>
-<img src="assets/IMG_0419.png" width="200" />
-<img src="assets/IMG_0420.png" width="200" />
+<img src="assets/IMG_0419.PNG" width="200" />
+<img src="assets/IMG_0420.PNG" width="200" />
 </div>
 Login and Sign Up Screens
 
 <div>
-<img src="assets/IMG_0418.png" width="200" />
-<img src="assets/IMG_0423.png" width="200" />
+<img src="assets/IMG_0418.PNG" width="200" />
+<img src="assets/IMG_0423.PNG" width="200" />
 </div>
 Teacher vs Student Home Screen
 
 <div>
-<img src="assets/IMG_0421.png" width="200" />
-<img src="assets/IMG_0422.png" width="200" />
+<img src="assets/IMG_0421.PNG" width="200" />
+<img src="assets/IMG_0422.PNG" width="200" />
 </div>
 Navigation and Setting Screen
 
 <div>
-<img src="assets/IMG_0426.png" width="200" />
-<img src="assets/IMG_0427.png" width="200" />
+<img src="assets/IMG_0426.PNG" width="200" />
+<img src="assets/IMG_0427.PNG" width="200" />
 </div>
 Live Classroom Session
 
 <div>
-<img src="assets/IMG_0429.png" width="200" />
+<img src="assets/IMG_0429.PNG" width="200" />
 </div>
 Apple Pay
 
 <div>
-<img src="assets/IMG_0432.png" width="200" />
-<img src="assets/IMG_0431.png" width="200" />
+<img src="assets/IMG_0432.PNG" width="200" />
+<img src="assets/IMG_0431.PNG" width="200" />
 </div>
 Recordings
 
