@@ -95,15 +95,6 @@ class _ClassCallState extends ConsumerState<ClassCall> {
   }
 
   @override
-  void dispose() async {
-    http.get(
-      Uri.parse(
-          'https://agora-server-hr4b.onrender.com/stop-transcribing/$taskId/$builderToken'),
-    );
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
@@ -136,6 +127,8 @@ class _ClassCallState extends ConsumerState<ClassCall> {
               AgoraVideoButtons(
                 client: client,
                 onDisconnect: () {
+                  http.get(Uri.parse(
+                      'https://agora-server-hr4b.onrender.com/stop-transcribing/$taskId/$builderToken'));
                   ref
                       .read(userProvider.notifier)
                       .checkToRemoveSession(widget.sessionId);

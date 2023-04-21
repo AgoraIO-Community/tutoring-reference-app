@@ -1,63 +1,191 @@
-# Tutoring Reference Application
+# Build your own Tutoring Application with Agora
 
-Reference app for a math tutoring use case.
+This guide will walk you through building your own tutoring application. This will be a complete application including authentication, user management, payment, and tons of real time features.
 
-# Summary
+- [Getting Started](#getting-started)
+- [Overview](#overview)
+- [File Structure](#file-structure)
+- [Architecture Diagram](#architecture-diagram)
+- [User Flow Diagram](#user-flow-diagram)
+- [App Screens](#app-screens)
+- [Agora Overview](#agora-overview)
+- [Agora Features](#agora-features)
+  - [Video Call](#video-call)
+  - [Cloud Recording](#cloud-recording)
+  - [View Recorded Lessons](#view-recorded-lessons)
+  - [Real Time Transcription](#real-time-transcription)
+  - [Custom Actions from Agora Events](#custom-actions-from-agora-events)
+- [Other Key Features](#other-key-features)
+  - [Apple Pay Integration](#apple-pay-integration)
 
-Tutoring is a very popular sector for Flutter applications. Tutoring is a real time interaction that is either 1-1 or 1-many, and in this case Agora is well suited to provide a reliable solution to any tutoring application. This reference app will be targeted at a Mathematics specific use case.
+## Getting Started
+The tools we will be using for this are:
 
-# Business Strategy
+* Flutter
+* Agora
+* Firebase
+* Riverpod
+* Apple Pay with `pay` package
+* Other Flutter Packages Including: `image_picker` and `intl`
+* Custom Backend built with Python & Flask
 
-This reference app aims to provide a strong starting point for anybody looking to build a tutoring application. It will utilize the latest technologies so developers can take the code, have the foundation ready to go and are free to develop the fun part: which is building new features.
+The code for the Flutter app can be found [here](https://github.com/tadaspetra/tutor) and the backend code can be found [here](https://github.com/tadaspetra/agora-server). In this blog we will talk about the general structure of the application, and I want to dive a little deeper on the Cloud Recording and Real Time Transcription feature. These are the parts 
 
-# Target Users
+## Overview
+The `tutor` app will have users login or sign up using Firebase Auth, and have the state of the user managed updated and managed using Riverpod and Cloud Firestore. You can change the account between a teacher or student account using a toggle in the user settings. Both accounts have the ability to pay and join sessions, but the teacher account has a special ability to create sessions as well. 
 
-**Math Teachers -** Will use this application to host live interactive 1-1 classes, or larger lectures. They will also be able to make an income from this application as each student has to pay to attend.
-**Student -** With an option for personal tutoring sessions or bigger live sessions, students can use this app to get help and dive deeper into the topics they are trying to learn.
+Once the session is started, users 
 
-# Tech Spec
+## File Structure
+```
+lib
+├── models
+│   ├── recording
+│   ├── session
+│   └── user
+├── pages
+│   ├── home
+│   ├── recordings
+│   ├── class
+│   ├── create
+│   ├── settings
+│   ├── signin
+│   └── signup
+├── protobuf
+├── providers
+│   └── user_provider
+├── consts
+└── main
+```
 
-- Built with Flutter 3.7
-- Target Devices: Android, iOS, Web
-- Minimum Versions
-  - Android SDK 32
-  - iOS 16.0
+## Architecture Diagram
+![Architecture Diagram](assets/architecture.png)
 
-# Structure Diagram
+## User Flow Diagram
+![User Flow Diagram](assets/userflow.png)
 
-![Structure Diagram](diagram.png)
+## App Screens
+<div>
+<img src="assets/IMG_0419.png" width="200" />
+<img src="assets/IMG_0420.png" width="200" />
+</div>
+Login and Sign Up Screens
 
-# Functional Requirements
+<div>
+<img src="assets/IMG_0418.png" width="200" />
+<img src="assets/IMG_0423.png" width="200" />
+</div>
+Teacher vs Student Home Screen
 
-| Req # | Use Case           | Feature Requirements                                                                                                                                                                       |
-| ----- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1     | 1-1 Video Call     | <ul><li>Join a Session</li><li>Leave a Session</li><li>Hear and see each other</li><li>Mute Microphone</li><li>Turn Video On/Off</li></ul>                                                 |
-| 2     | Lecture Group Call | <ul><li>Join a Session</li><li>Leave a Session</li><li>Hear and see each other</li><li>Mute Microphone</li><li>Turn Video On/Off</li></ul>                                                 |
-| 3     | Lesson Recordings  | <ul><li>Record lesson</li><li>View recorded lesson</li></ul>                                                                                                                               |
-| 4     | Speech to Text     | <ul><li>View lesson text</li></ul>                                                                                                                                                         |
-| 5     | Screen Share       | <ul><li>Toggle Screen Share</li><li>Choose which screen/window to share</li></ul>                                                                                                          |
-| 6     | Schedule a Session | <ul><li>Display available sessions with tutor and session info</li><li>Select Available session with chosen tutor</li><li>Pay for the session</li><li>As a tutor, create session</li></ul> |
+<div>
+<img src="assets/IMG_0421.png" width="200" />
+<img src="assets/IMG_0422.png" width="200" />
+</div>
+Navigation and Setting Screen
 
-# Feature Specification
+<div>
+<img src="assets/IMG_0426.png" width="200" />
+<img src="assets/IMG_0427.png" width="200" />
+</div>
+Live Classroom Session
 
-| Use Case           | Feature                      | Details                                                                                  | Priority | Agora Tools        | External Tools       | Timeline |
-| ------------------ | ---------------------------- | ---------------------------------------------------------------------------------------- | -------- | ------------------ | -------------------- | -------- |
-| 1-1 Video Call     | Join a Session               | Request permissions, create RTC Engine, join channel, publish and subscribe              | P0       | RTC & Token Server |                      | 0.25     |
-|                    | Leave a Session              | Leave the channel                                                                        | P0       | RTC                |                      | 0.25     |
-|                    | Hear and see each other      | Enable video before joining channel                                                      | P0       | RTC                |                      | 0.25     |
-|                    | Mute Microphone              | Toggle microphone on engine, and show in UI                                              | P0       | RTC                |                      | 0.25     |
-|                    | Turn Video On/Off            | Toggle video on engine and show in UI                                                    | P0       | RTC                |                      | 0.25     |
-| Lecture Group Call | Join a Session               | Request permissions, create RTC Engine, join channel, publish and subscribe              | P0       | RTC & Token Server |                      | 0.25     |
-|                    | Leave a Session              | Leave the channel                                                                        | P0       | RTC                |                      | 0.25     |
-|                    | Hear and see each other      | Enable video before joining channel                                                      | P0       | RTC                |                      | 0.25     |
-|                    | Mute Microphone              | Toggle microphone on engine, and show in UI                                              | P0       | RTC                |                      | 0.25     |
-|                    | Turn Video On/Off            | Toggle video on engine and show in UI                                                    | P0       | RTC                |                      | 0.25     |
-| Lesson Recording   | Record Lesson                | Save a recording of the lesson to a database                                             | P0       | Cloud Recording    | AWS                  | 3        |
-|                    | View Recorded Lesson         | Retrieve lesson, and show only to users who have paid for that session                   | P0       | Cloud Recording    | AWS                  | 2        |
-| Speech to Text     | Display Text                 | Display speech to text                                                                   | P0       | STT                | AWS                  | 4        |
-| Screen Share       | Toggle Screen Share          | Toggle screen share on engine, and update UI                                             | -        | RTC                |                      | 3        |
-|                    | Choose which screen to share | When screen share gets toggled, show a UI of which screen user wants to share            | -        | RTC                |                      | 0.5      |
-| Schedule a Session | Display Tutors               | Show a list of tutors stored in the database with what they specialize and their ratings | P0       |                    | Firebase             | 1        |
-|                    | Select Session               | Can click into the session, register, and have it show as upcoming on your home screen   | P0       |                    | Firebase             | 1        |
-|                    | Pay for session              | Before students can join the session they have to pay using Stripe                       | P1       |                    | GooglePay + ApplePay | 3-5      |
-|                    | Create Session               | Tutors can create sessions that students can pay for and join                            | P0       |                    | Firebase             | 1        |
+<div>
+<img src="assets/IMG_0429.png" width="200" />
+</div>
+Apple Pay
+
+<div>
+<img src="assets/IMG_0432.png" width="200" />
+<img src="assets/IMG_0431.png" width="200" />
+</div>
+Recordings
+
+## Agora Overview
+The main feature of the `tutor` app is the ability to have video call lessons between teacher and students. We will be using Agora for this. Agora is a real time communication platform that allows you to build video calls, voice calls, and live streaming into your application, and it can handle all the real time communication that will be needed for this application
+
+## Agora Features
+### Video Call
+The video call is the most important part of the application, since this is where the video call is going to be happening. For this we used the `agora_uikit` package to build the video call screen. This package is a wrapper around the Agora SDK, and comes with a prebuilt UI so we don't need to define it all ourselves.
+
+You will need an agora account to use this package. And you can create one at [console.agora.io](https://console.agora.io). Once you have an account, you will need to create a project and get the `App ID` for the project. This is needed in order to connect to the Agora SDK.
+
+Make sure to add the [following permissions](https://pub.dev/packages/agora_uikit#device-permission) for both iOS and Android
+
+To add the package run
+```
+flutter pub add agora_uikit
+```
+
+In order to have your video calls be secure, you will need to create a token server. And then we can link to it without our UI Kit. You can find more information about token servers [here](https://www.agora.io/en/blog/how-to-build-a-token-server-using-golang/).
+
+Once all the set up is complete we can create a `class.dart` file, and add the following code to it
+```dart
+import 'package:agora_uikit/agora_uikit.dart';
+import 'package:flutter/material.dart';
+
+class ClassCall extends StatefulWidget {
+  const ClassCall({Key? key}) : super(key: key);
+
+  @override
+  State<ClassCall> createState() => _ClassCallState();
+}
+
+class _ClassCallState extends State<ClassCall> {
+  final AgoraClient client = AgoraClient(
+    agoraConnectionData: AgoraConnectionData(
+      appId: "<--Add your App Id here-->",
+      channelName: "test",
+      username: "user",
+      tokenUrl: "<--Add your token server url here-->",
+    ),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    initAgora();
+  }
+
+  void initAgora() async {
+    await client.initialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('Classroom'),
+        ),
+        body: SafeArea(
+            child: Stack(
+            children: [
+                AgoraVideoViewer(
+                    client: client,
+                    layoutType: Layout.floating,
+                ),
+                AgoraVideoButtons(
+                    client: client,
+                ),
+            ],
+            ),
+        ),
+    );
+  }
+}
+```
+
+I want to only allow users to leave this screen when they press the end call button. I don't want them to be able to swipe backwards, or have a back button in the app bar. To do this, I first removed the `AppBar()` widget, and added a the `onDisconnect` function to the `AgoraVideoButtons` widget. This function will be called when the end call button is pressed. Inside this function I just call `Navigator.pop(context)`. This will pop the current screen off the stack, and take the user back to the previous screen.
+
+So that will allow the user to not see a back button at the top, and jump back when they press the end call button. However there are system back buttons. For both iOS and Android you can either press a system back button or swipe back. To remove this capablility we will use a `WillPopScope` widget. When we wrap it around our `Scaffold`, this widget will allow us to override the default behavior of the back button. And we can do this by returning a `Future<bool>` from the `onWillPop` function. If we return `true` then the back button will work as normal, and if we return `false` then the back button will not work. You can customize this to work under different conditions, but for our use case we will just set it to always return `false`.
+
+### Cloud Recording
+
+### View Recorded Lessons
+
+### Real Time Transcription
+
+### Custom Actions from Agora Events
+
+## Other Key Features
+
+### Apple Pay Integration

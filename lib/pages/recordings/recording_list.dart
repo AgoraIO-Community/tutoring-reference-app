@@ -20,7 +20,7 @@ class RecordingList extends ConsumerWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(snapshot.data![index].sessionId),
+                    title: Text(snapshot.data![index].url),
                     subtitle: Text(snapshot.data![index].date),
                     onTap: () {
                       Navigator.push(

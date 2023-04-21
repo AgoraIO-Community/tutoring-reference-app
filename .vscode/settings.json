@@ -2,5 +2,7 @@
     "cSpell.enableFiletypes": [
         "!dart",
         "!yaml"
-    ]
+    ],
+    "markdown.extension.toc.levels": "2..6"
+    
 }
