@@ -1,6 +1,6 @@
-# Build your own Tutoring Application with Agora
+# Build Your own Tutoring Application with Agora
 
-This guide will walk you through building your own tutoring application. This will be a complete application including authentication, user management, payment, and tons of real time features.
+This guide walks you through building your own tutoring application. This application will allow you to create lessons as a teacher, and pay for and attend lessons as a student.These video lessons will be hosted on the platform. This will be a complete application including authentication, user management, payment, and tons of real-time features.
 
 - [Getting Started](#getting-started)
 - [Overview](#overview)
@@ -15,7 +15,7 @@ This guide will walk you through building your own tutoring application. This wi
     - [Start Recording](#start-recording)
     - [Stop Recording](#stop-recording)
   - [View Recorded Lessons](#view-recorded-lessons)
-  - [Real Time Transcription](#real-time-transcription)
+  - [Real-Time Transcription](#real-time-transcription)
     - [Start Transcribing](#start-transcribing)
     - [Custom Actions from Agora Events](#custom-actions-from-agora-events)
     - [Stop Transcription](#stop-transcription)
@@ -23,22 +23,22 @@ This guide will walk you through building your own tutoring application. This wi
   - [Apple Pay Integration](#apple-pay-integration)
 
 ## Getting Started
-The tools we will be using for this are:
+The tools we'll use for this projects are:
 
 * Flutter
 * Agora
 * Firebase
 * Riverpod
 * Apple Pay with `pay` package
-* Other Flutter Packages Including: `image_picker`, `video_player`b and `intl`
-* Custom Backend built with Python & Flask
+* Other Flutter packages including: `image_picker`, `video_player` and `intl`
+* Custom back end built with Python and Flask
 
-The code for the Flutter app can be found [here](https://github.com/tadaspetra/tutor) and the backend code can be found [here](https://github.com/tadaspetra/agora-server). In this blog we will talk about the general structure of the application, and I want to dive a little deeper on the Cloud Recording and Real Time Transcription feature.
+The code for the Flutter app can be found [here](https://github.com/tadaspetra/tutor). The back-end code can be found [here](https://github.com/tadaspetra/agora-server). In this blog post, we will talk about the general structure of the application. And we'll dive into the Agora Cloud Recording and Real-Time Transcription features.
 
 ## Overview
-The `tutor` app will have users login or sign up using Firebase Auth, and have the state of the user managed and updated using Riverpod and Cloud Firestore. You can change the account between a teacher or student account using a toggle in the user settings. Both accounts have the ability to pay and join sessions, but the teacher account has a special ability to create sessions as well. 
+The `tutor` app will have users log in or sign up using Firebase Authentication, and it will have the state of the user managed and updated using Riverpod and Firebase Cloud Firestore. You can toggle between a teacher or a student account in the user settings. Both accounts have the ability to pay and join sessions, but the teacher account also has a special ability to create sessions. 
 
-Once the session is started, users can see the real time text being converted, as well as manage their cameras. 
+Once the session is started, users can see the real-time text being converted and manage their cameras. 
 
 ## File Structure
 ```
@@ -81,13 +81,13 @@ Login and Sign Up Screens
 <img src="assets/IMG_0418.PNG" width="200" />
 <img src="assets/IMG_0423.PNG" width="200" />
 </div>
-Teacher vs Student Home Screen
+Teacher vs. Student Home Screen
 
 <div>
 <img src="assets/IMG_0421.PNG" width="200" />
 <img src="assets/IMG_0422.PNG" width="200" />
 </div>
-Navigation and Setting Screen
+Navigation and Settings Screens
 
 <div>
 <img src="assets/IMG_0426.PNG" width="200" />
@@ -107,13 +107,13 @@ Apple Pay
 Recordings
 
 ## Agora Overview
-The main feature of the `tutor` app is the ability to have video call lessons between teacher and students. We will be using Agora for this. Agora is a real time communication platform that allows you to build video calls, voice calls, and live streaming into your application, and it can handle all the real time communication that will be needed for this application.
+The main feature of the `tutor` app is the ability to have video call lessons between teacher and students. We will be using Agora for this. Agora is a real-time communication platform that allows you to build video calls, voice calls, and live streaming into your application. And it can handle all the real time communication that will be needed for this application.
 
 ## Agora Features
 ### Video Call
-The video call is the most important part of the application, since this is where the teaching is going to be happening. For this we used the `agora_uikit` package to build the video call screen. This package is a wrapper around the Agora SDK, and comes with a prebuilt UI so we don't need to define it all ourselves.
+The video call is the most important part of the application because this is where the teaching will happen. For this we used the `agora_uikit` package to build the video call screen. This package is a wrapper around the Agora SDK, and it comes with a prebuilt UI, so we don't need to define it all ourselves.
 
-You will need an agora account to use this package. And you can create one at [console.agora.io](https://console.agora.io). Once you have an account, you will need to create a project and get the `App ID` for the project. This is needed in order to connect to the Agora SDK.
+You need an Agora account to use this package. You can create one at [console.agora.io](https://console.agora.io). Once you have an account, you need to create a project and get the `App ID` for the project. You need the App ID to connect to the Agora SDK.
 
 Make sure to add the [following permissions](https://pub.dev/packages/agora_uikit#device-permission) for both iOS and Android.
 
@@ -122,9 +122,9 @@ To add the package run
 flutter pub add agora_uikit
 ```
 
-In order to have your video calls be secure, you will need to create a token server. And then we can link to it with our UI Kit. You can find more information about token servers [here](https://www.agora.io/en/blog/how-to-build-a-token-server-using-golang/).
+To secure your video calls, you will need to create a token server. Then we can link to it with our UI Kit. You can find more information about token servers [here](https://www.agora.io/en/blog/how-to-build-a-token-server-using-golang/).
 
-Once all the set up is complete we can create a `class.dart` file, and add the following code to it
+Once the set-up is complete we can create a `class.dart` file and add the following code to it.
 ```dart
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
@@ -180,25 +180,25 @@ class _ClassCallState extends State<ClassCall> {
 }
 ```
 
-I want to only allow users to leave this screen when they press the end call button. I don't want them to be able to swipe backwards, or have a back button in the app bar. To do this, I first removed the `AppBar()` widget, and added the `onDisconnect` function to the `AgoraVideoButtons` widget. This function will be called when the end call button is pressed. Inside this function I just call `Navigator.pop(context)`. This will pop the current screen off the stack, and take the user back to the previous screen.
+We want to allow users to leave this screen when they press the end call button. We don't want them to be able to swipe backward, or have a back button in the app bar. To do this, we first removed the `AppBar()` widget, and then we added the `onDisconnect` function to the `AgoraVideoButtons` widget. This function will be called when the end call button is pressed. Inside this function we just call `Navigator.pop(context)`. This will pop the current screen off the stack, and take the user back to the previous screen.
 
-So that will allow the user to not see a back button at the top, and jump back when they press the end call button. However, there are system back buttons. For both iOS and Android you can either press a system back button or swipe back. To remove this capability we will use a `WillPopScope` widget. When we wrap it around our `Scaffold`, this widget will allow us to override the default behavior of the back button. And we can do this by returning a `Future<bool>` from the `onWillPop` function. If we return `true` then the back button will work as normal, and if we return `false` then the back button will not work. You can customize this to work under different conditions, but for our use case we will just set it to always return `false`.
+That will allow the user to not see a back button at the top, and only return back when they press the end call button. However, there are system back buttons to deal with. For both iOS and Android you can either press a system back button or swipe back. To remove this capability we will use a `WillPopScope` widget. When we wrap it around our `Scaffold`, this widget will allow us to override the default behavior of the back button. We can do this by returning a `Future<bool>` from the `onWillPop` function. If we return `true` then the back button will work as normal. If we return `false`, then the back button will not work. You can customize the `onWillPop` function to allow the page to pop under different conditions, but for our use case we will set it to always return `false`.
 
 ### Cloud Recording
-Cloud Recording is a feature where you can connect your own database and record lessons in you app, which then saves a file within the database you connected. For this we will need to use Agora's RESTful API with our own backend service.
+With the Cloud Recording feature, you can connect your own database and record lessons in your app, which then saves a file in the database you connected. For this we need to use the Agora RESTful API with our own back-end service.
 
-The reason for the backend service is for security reasons. We don't want to be storing our Agora customer key and secret on our actual application. This server was built with Python and Flask, and you can find the code [here](https://github.com/tadaspetra/agora-server). We will only cover the Agora API side of this server, but if you want to learn more about building a server from scratch with Flask I recommend [this video](https://www.youtube.com/watch?v=xeuW-IitQTQ).
+The back-end service is required for security reasons. We don't want to store our Agora customer key and customer secret in our application. This server was built with Python and Flask, and you can find the code [here](https://github.com/tadaspetra/agora-server). We will cover only the Agora API side of this server, but if you want to learn more about building a server from scratch with Flask I recommend [this video](https://www.youtube.com/watch?v=xeuW-IitQTQ).
 
-There are two functions that we will implement on our backend server: `start-recording` and `stop-recording`.
+We will implement two functions on our back-end server: `start-recording` and `stop-recording`.
 
 #### Start Recording
-Our `start-recording` endpoint will need a channel in order for our backend to know which channel this recording should be started on. Once it is started, we need to provide the caller of the endpoint, the SID and the Resource ID, so that the caller knows exactly where this recording will be stored.
+Our `start-recording` endpoint needs a channel in order for our backend to know which channel this recording should be started on. Once it is started, we need to provide the caller of the endpoint, the SID, and the resource ID so that the caller knows exactly where this recording will be stored.
 
-We cannot start the recording right away. The first step of cloud recording is to create a resource for cloud recording. And in order to create a resource we need a credential. In order to be able to generate a credential we need a Customer Key and Customer Secret. You can create these within the Agora Console.
+We cannot start the recording right away. The first step of cloud recording is to create a resource for cloud recording. And to create a resource we need a credential. To generate a credential we need a customer key and customer secret. You can create these in the Agora Console.
 
 ![RESTful API](https://web-cdn.agora.io/docs-files/1637661003647)
 
-To get a complete credential that can be used to generate a resource we need to encode our customer key and secret. We can do this with the following code.
+To get a complete credential that can be used to generate a resource, we need to encode our customer key and customer secret. We can do this with the following code.
 
 ```python
 def generate_credential():
@@ -210,7 +210,7 @@ def generate_credential():
     return credential
 ```
 
-Using our credential we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6e47859b-5ab5-47b0-8095-5a3ec3dba54c). This method will return a Resource ID that corresponds to the resource that was created. We will use this to start our recording.
+Using our credential, we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6e47859b-5ab5-47b0-8095-5a3ec3dba54c). This method will return a resource ID that corresponds to the resource that was created. We will use this ID to start our recording.
 
 ```python
 def generate_resource(channel):
@@ -237,12 +237,12 @@ def generate_resource(channel):
     return resourceId
 ```
 
-Then we are ready to start the recording. You can find more details about all the configurations that you should set up [here](https://docs.agora.io/en/cloud-recording/reference/rest-api/start).
+Now we are ready to start the recording. You can find more details about all the configurations that you should set up [here](https://docs.agora.io/en/cloud-recording/reference/rest-api/start).
 
 Here are some key features for our configuration
 
 * We record in `mix` mode, so videos get combined into one file.
-* We save this into an `agora` folder on AWS.
+* We save this file into an `agora` folder on AWS.
 * We save an `mp4` file.
 
 ```python
@@ -292,12 +292,12 @@ def start_cloud_recording(channel):
     return resource_id, sid
 ```
 
-With the backend service, complete we can implement the cloud recording within our application. To do this we need to add our link to the `cloudRecordingUrl` argument within our `AgoraClient`, and set `cloudRecordingEnabled: true` on our `AgoraVideoButtons` widget.
+With the back-end service complete, we can implement the cloud recording in our application. To do this, we need to add our link to the `cloudRecordingUrl` argument in our `AgoraClient` and set `cloudRecordingEnabled: true` on our `AgoraVideoButtons` widget.
 
 #### Stop Recording
-To stop the recording we need to implement another function on the backend. Nothing else needs to be done on the front end side, since that is taken care of by the UI Kit. We just need a working endpoint that follows the `/stop-recording/<--Channel Name-->/<--SID-->/<--Resource ID-->` format.
+To stop the recording, we need to implement another function on the backend. Nothing else needs to be done on the front end side, since that is taken care of by the UI Kit. We just need a working endpoint that follows the `/stop-recording/<--Channel Name-->/<--SID-->/<--Resource ID-->` format.
 
-The key part here is we need to return the information to the end user, specifically the mp4 link.
+The key part here is we need to return the information to the end user-specifically the mp4 link.
 
 ```python
 def stop_cloud_recording(channel, resource_id, sid):
@@ -332,11 +332,11 @@ def stop_cloud_recording(channel, resource_id, sid):
 ```
 
 ### View Recorded Lessons
-In order to view the recordings at any moment after the video call, we need to store a link to where the file is located first. Our app was built with Firebase Authentication and Firestore storage, so it makes sense to store it in Firestore. 
+To view the recordings at any moment after the video call, we first need to store a link to where the file is located. Our app was built with Firebase Authentication and Firestore storage, so it makes sense to store the link in Firestore. 
 
-To do this, there is a `cloudRecordingCallback` function on the `AgoraClient` which returns the mp4 link for us.
+To do this, there is a `cloudRecordingCallback` function on the `AgoraClient` that returns the mp4 link for us.
 
-First we create a data class to hold all the information we need when it comes to the recording.
+First, we create a data class to hold all the information we need when it comes to the recording.
 
 ```dart
 class Recording {
@@ -366,7 +366,7 @@ Future<void> storeRecording(Recording recording) {
 }
 ```
 
-And lastly, we can call this function within our `cloudRecordingCallback`.
+Finally, we can call this function in our `cloudRecordingCallback`.
 
 ```dart
 ref.read(userProvider.notifier).storeRecording(
@@ -379,7 +379,7 @@ ref.read(userProvider.notifier).storeRecording(
     );
 ```
 
-The way we display these recordings is by showing a list of all the recordings for the user, and they can click in on each recording to actually view the playback for it. To do that we will add another function to our user provider to retrieve all the data that's needed.
+We display these recordings by showing a list of all the recordings for the user. They can click each recording to view its playback. To do that, we will add another function to our user provider to retrieve all the data that's needed.
 
 ```dart
 Future<List<Recording>> getRecordings() async {
@@ -397,7 +397,7 @@ Future<List<Recording>> getRecordings() async {
 }
 ```
 
-Then display a list view of the recordings that can be accessed through the `Drawer` Widget. 
+Then we display a list view of the recordings that can be accessed through the `Drawer` widget. 
 
 ```dart
 class RecordingList extends ConsumerWidget {
@@ -441,7 +441,7 @@ class RecordingList extends ConsumerWidget {
 }
 ```
 
-And then lastly, using the `video_player` package display the video on a new screen.
+Finally, using the `video_player` package, we display the video on a new screen.
 
 ```dart
 class Recording extends StatefulWidget {
@@ -513,17 +513,17 @@ class _RecordingState extends State<Recording> {
 }
 ```
 
-### Real Time Transcription
-Real Time Transcription follows a similar process as Cloud Recording. We will again need to use Agora's RESTful API with our own backend service.
+### Real-Time Transcription
+The Real-Time Transcription feature uses a process similar to the Cloud Recording feature. We will again need to use the Agora RESTful API with our own back-end service.
 
-The reason for the backend service is for security reasons. We don't want to be storing our Agora customer key and secret on our actual application. This server was built with Python and Flask, and you can find the code [here](https://github.com/tadaspetra/agora-server). We will only cover the Agora API side of this server, but if you want to learn more about building a server from scratch with Flask I recommend [this video](https://www.youtube.com/watch?v=xeuW-IitQTQ).
+The back-end service is required for security reasons. We don't want to store our Agora customer key and customer secret in our application. This server was built with Python and Flask, and you can find the code [here](https://github.com/tadaspetra/agora-server). We will cover only the Agora API side of this server, but if you want to learn more about building a server from scratch with Flask, I recommend [this video](https://www.youtube.com/watch?v=xeuW-IitQTQ).
 
-There are two functions that we will implement on our backend server: `start-transcribing` and `stop-transcribing`.
+We will implement two functions on our back-end server: `start-transcribing` and `stop-transcribing`.
 
 #### Start Transcribing
-Our `start-transcribing` endpoint will need a channel in order for our backend to know which channel this transcription should be started on. Once it is started, we need to provide the caller of the endpoint, the Task ID and the Builder Token, so that the caller knows exactly where this transcription will be stored.
+Our `start-transcribing` endpoint needs a channel so that our backend knows which channel this transcription should be started on. Once it is started, we need to provide the caller of the endpoint, the task ID and the builder token so that the caller knows exactly where this transcription will be stored.
 
-We cannot start the transcribing right away. The first step of real time transcription is to create a resource for transcribing. And in order to create a resource we need a credential. In order to be able to generate a credential we need a Customer Key and Customer Secret. You can create these within the Agora Console.
+We cannot start transcribing right away. The first step of real-time transcription is to create a resource for transcribing. To create a resource we need a credential. To generate a credential we need a customer key and customer secret. You can create these in the Agora Console.
 
 ![RESTful API](https://web-cdn.agora.io/docs-files/1637661003647)
 
@@ -550,7 +550,7 @@ def rtt_generate_resource(channel):
     return tokenName
 ```
 
-Using our credential we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#89043c3d-ae8a-4180-a5f4-ede8de441fd4). This method will return a tokenName that corresponds to the resource that was created. We will use this to start our transcribing.
+Using our credential, we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#89043c3d-ae8a-4180-a5f4-ede8de441fd4). This method will return a tokenName that corresponds to the resource that was created. We will use the tokenName to start transcribing.
 
 ```python
 def rtt_generate_resource(channel):
@@ -575,12 +575,12 @@ def rtt_generate_resource(channel):
     return tokenName
 ```
 
-Then we are ready to start the transcribing. You can find more details about all the configurations that you should set up [here](https://documenter.getpostman.com/view/6319646/SVSLr9AM#92041cab-1f45-4ff3-83a5-601fa06a0427).
+Now we are ready to start transcribing. You can find more details about all the configurations that you should set up [here](https://documenter.getpostman.com/view/6319646/SVSLr9AM#92041cab-1f45-4ff3-83a5-601fa06a0427).
 
-Here are some key features for our configuration
+Here are some key features for our configuration:
 
 * We can transcribe in English and Spanish
-* Store in a folder called rtt
+* We store the transcription in a folder named rtt
 
 ```python
 def start_transcription(channel):
@@ -650,7 +650,7 @@ def start_transcription(channel):
     return taskID, tokenName
 ```
 
-To start this process we will add this call to the `initState` of our `StatefulWidget`.
+To start this process, we add this call to the `initState` of our `StatefulWidget`.
 
 ```dart
  final response = await http.post(
@@ -661,9 +661,9 @@ taskId = jsonDecode(response.body)['taskId'];
 builderToken = jsonDecode(response.body)['builderToken'];
 ```
 #### Custom Actions from Agora Events
-But this doesn't actually show anything within our application. In order to do that we need to set up a [Protobuf for our project](https://protobuf.dev/getting-started/darttutorial/). 
+But calling this endpoint doesn't actually show anything in our application. To do that, we need to set up a [protobuf for our project](https://protobuf.dev/getting-started/darttutorial/). 
 
-Here is a template for Agora's Real Time Transcription
+Here is a template for Agora Real-Time Transcription
 ```
 syntax = "proto3";
 
@@ -692,7 +692,7 @@ message Word {
 }
 ```
 
-Once the protobuf is set up, we retrieve the transcribed message from the `onStreamMessage` callback. We can take this message, run it through our protobuf, and add the text into a list.
+Once the protocol buffer is set up, we retrieve the transcribed message from the `onStreamMessage` callback. We can take this message, run it through our protobuf, and add the text to a list.
 
 ```dart
 agoraEventHandlers: AgoraRtcEventHandlers(
@@ -712,7 +712,7 @@ agoraEventHandlers: AgoraRtcEventHandlers(
 )
 ```
 
-Then add this view on top of our stack, and we can see the transcription happening live.
+When we add this view on top of our stack we can see the transcription happening live.
 
 ```dart
 Padding(
@@ -754,7 +754,7 @@ def stop_transcription(task_id, builder_token):
     return data
 ```
 
-Then we call that endpoint from our Flutter application whenever the endCall button is pressed, and our Real Time Transcription will be  complete.
+Then we call that endpoint from our Flutter application whenever the endCall button is pressed, and our real-time transcription will be  complete.
 ```dart
 http.get(Uri.parse(
   'https://agora-server-hr4b.onrender.com/stop-transcribing/$taskId/$builderToken'));
@@ -764,9 +764,9 @@ http.get(Uri.parse(
 
 ### Apple Pay Integration
 
-In order to have Apple Pay on your app, you need to be a valid merchant, and have that merchant ID connected to your application. You can find more information about that on this [Apple Pay Guide](https://www.hungrimind.com/flutter/apple_pay).
+To have Apple Pay on your app, you need to be a valid merchant and have your merchant ID connected to your application. You can find more information about that on this [Apple Pay Guide](https://www.hungrimind.com/flutter/apple_pay).
 
-Once you have all that setup, on the `onPaymentResult` argument within the Apple Pay button, we will execute a `joinSession` function defined in our user provider. This function will add it to the current student's upcoming sessions list, as well as add that student's ID to the class's student list.
+Once you have that set up, on the `onPaymentResult` argument in the Apple Pay button, we will execute a `joinSession` function defined in our user provider. This function will add the session to the current student's upcoming sessions list and add that student's ID to the class's student list.
 
 ```dart
 Future<void> joinSession(String sessionId, bool isLecture) async {
