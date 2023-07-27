@@ -100,7 +100,7 @@ We cannot start the recording right away. The first step of cloud recording is t
 
 Using our credential, we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6e47859b-5ab5-47b0-8095-5a3ec3dba54c). This method will return a resource ID that corresponds to the resource that was created. We will use this ID to start our recording.
 
-```json
+```js
 url = f"https://api.agora.io/v1/apps/{APP_ID}/cloud_recording/acquire"
 payload = {
     "cname": channel,
@@ -111,7 +111,7 @@ payload = {
 
 You can learn about how to start the cloud recording in composite mode [here](https://docs.agora.io/en/cloud-recording/develop/composite-mode#start-recording). You can find more details about all the configurations that you should set up [here](https://docs.agora.io/en/cloud-recording/reference/rest-api/start).
 
-```json
+```js
 url = f"https://api.agora.io/v1/projects/{APP_ID}/rtsc/speech-to-text/tasks?builderToken={tokenName}"
 payload = {
     "audio": {
@@ -179,7 +179,7 @@ To stop the recording, we need to implement another function on the backend. Not
 
 The key part here is we need to return the information to the end user-specifically the mp4 link.
 
-```json
+```js
 url = f"https://api.agora.io/v1/apps/{APP_ID}/cloud_recording/resourceid/{resource_id}/sid/{sid}/mode/mix/stop"
 payload = {
     "cname": channel,
@@ -215,7 +215,7 @@ We cannot start transcribing right away. The first step of real-time transcripti
 Using our credential, we then need to generate that resource using [`acquire`](https://documenter.getpostman.com/view/6319646/SVSLr9AM#89043c3d-ae8a-4180-a5f4-ede8de441fd4). This method will return a tokenName that corresponds to the resource that was created. We will use the tokenName to start transcribing.
 
 
-```json
+```js
 url = f"https://api.agora.io/v1/projects/{APP_ID}/rtsc/speech-to-text/builderTokens"
 payload = {
     "instanceId": channel,
@@ -229,7 +229,7 @@ Here are some key features for our configuration:
 * We can transcribe in English and Spanish
 * We store the transcription in a folder named `rtt``
 
-```json
+```js
 url = f"https://api.agora.io/v1/projects/{APP_ID}/rtsc/speech-to-text/tasks?builderToken={tokenName}"
 payload = {
     "audio": {
@@ -322,7 +322,7 @@ Once the protocol buffer is set up, we retrieve the transcribed message from the
 #### Stop Transcription
 The last step is to stop the transcription after the call is complete. We need a working endpoint that follows the `/stop-transcribing/<--Channel Name-->/<--Task ID-->/<--Builder Token-->` format.
 
-```json
+```js
 url = f"https://api.agora.io/v1/projects/{APP_ID}/rtsc/speech-to-text/tasks/{task_id}?builderToken={builder_token}"
 payload = {}
 ```
