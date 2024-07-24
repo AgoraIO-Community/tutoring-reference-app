@@ -34,6 +34,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.black,
+          foregroundColor: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(

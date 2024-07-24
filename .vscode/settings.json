@@ -1,8 +1,5 @@
 {
-    "cSpell.enableFiletypes": [
-        "!dart",
-        "!yaml"
-    ],
-    "markdown.extension.toc.levels": "2..6"
-    
+  "cSpell.enableFiletypes": ["!dart", "!yaml"],
+  "markdown.extension.toc.levels": "2..6",
+  "cmake.ignoreCMakeListsMissing": true
 }

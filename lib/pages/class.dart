@@ -135,7 +135,6 @@ class _ClassCallState extends ConsumerState<ClassCall> {
                   Navigator.pop(context);
                 },
                 cloudRecordingEnabled: true,
-                addScreenSharing: true,
               ),
             ],
           ),
